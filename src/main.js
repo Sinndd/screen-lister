@@ -1,10 +1,12 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import { DisplayManager , JsQueryType } from '@ddc-node/ddc-node';
+import { DisplayManager, VCPFeatureCode } from '@ddc-node/ddc-node';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+let monitors = [];
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -14,25 +16,15 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.mjs'),
             contextIsolation: true, // Activer l'isolation du contexte
             enableRemoteModule: false, // Désactiver le module remote pour des raisons de sécurité
-            nodeIntegration: true // Désactiver l'intégration de Node.js dans le rendu
+            nodeIntegration: true // Activer l'intégration de Node.js dans le rendu
         }
     });
 
-    mainWindow.loadFile(path.join(__dirname, '../index.html'));
+    mainWindow.loadFile('index.html');
 
     // Ouvrir les DevTools
     mainWindow.webContents.openDevTools();
 }
-
-app.whenReady().then(() => {
-    createWindow();
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
-        }
-    });
-});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -40,42 +32,66 @@ app.on('window-all-closed', () => {
     }
 });
 
-// Écouter les messages IPC
-ipcMain.handle('get-displays', async (event) => {
+app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+    }
+});
+
+async function getMonitorInfo() {
     const displayManager = new DisplayManager();
-    const displays = await displayManager.collect();
-    console.log('Displays yo:', displays);
+    monitors = await displayManager.collect();
 
-
-    const displayInfo = await Promise.all(displays.map(async (display, index) => {
-        console.log(`Display ${index}:`, display);
-
-        let modelName;
-        let manufacturer;
+    const displayInfo = await Promise.all(monitors.map(async (monitor, index) => {
+        let brightness = 'N/A';
+        let modelName = 'Unknown Model';
+        let manufacturer = 'Unknown Manufacturer';
 
         try {
-            modelName = await display.getVcpFeature(JsQueryType.ModelName);
+            const brightnessFeature = await monitor.getVcpFeature(VCPFeatureCode.ImageAdjustment.Luminance);
+            brightness = brightnessFeature.currentValue;
+            console.log(`Monitor ${index + 1} Brightness: ${brightness}`);
         } catch (error) {
-            console.warn(`Display ${index} does not support ModelName:`, error);
-            modelName = 'Unknown Model';
+            console.warn(`Failed to get brightness for monitor ${index + 1}:`, error);
+            brightness = "Cet écran n'est pas compatible";
         }
 
         try {
-            const manufacturerInfo = await display.getVcpFeature(JsQueryType.ManufacturerId);
-            manufacturer = `Manufacturer ID: ${manufacturerInfo.currentValue}`;
+            const modelNameFeature = await monitor.getVcpFeature(VCPFeatureCode.DisplayControl.DisplayControllerId);
+            if (modelNameFeature?.currentValue) {
+                modelName = modelNameFeature.currentValue;
+                console.log(`Monitor ${index + 1} Model Name: ${modelName}`);
+            }
         } catch (error) {
-            console.warn(`Display ${index} does not support ManufacturerId:`, error);
-            manufacturer = 'Unknown Manufacturer';
+            console.warn(`Failed to get model name for monitor ${index + 1}:`, error);
         }
-
-        console.log(`Display ${index} Model Name:`, modelName);
-        console.log(`Display ${index} Manufacturer:`, manufacturer);
 
         return {
-            name: modelName,
-            manufacturer: manufacturer
+            modelName,
+            manufacturer,
+            brightness
         };
     }));
 
     return displayInfo;
+}
+
+// Écouter les messages IPC
+ipcMain.handle('get-displays', async (event) => {
+    const displayInfo = await getMonitorInfo();
+    console.log('Displays info:', displayInfo);
+    return displayInfo;
 });
+
+ipcMain.handle('set-brightness', async (event, index, brightness) => {
+    try {
+        const monitor = monitors[index];
+        const brightnessValue = parseInt(brightness, 10); // Convertir la luminosité en nombre
+        await monitor.setVcpFeature(VCPFeatureCode.ImageAdjustment.Luminance, brightnessValue);
+        console.log(`Monitor ${index + 1} Brightness set to: ${brightnessValue}`);
+    } catch (error) {
+        console.warn(`Failed to set brightness for monitor ${index + 1}:`, error);
+    }
+});
+
+app.whenReady().then(createWindow);

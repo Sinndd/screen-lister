@@ -5,16 +5,16 @@
     "main": "src/main.js",
     "type": "module",
     "scripts": {
-      "start": "electron .",
-      "dev": "electron .",
-      "build": "electron-builder"
+        "start": "electron .",
+        "dev": "electron .",
+        "build": "electron-builder"
     },
     "devDependencies": {
-      "electron": "^34.0.2",
-      "electron-builder": "^25.1.8"
+        "electron": "^34.0.2",
+        "electron-builder": "^25.1.8"
     },
     "dependencies": {
-      "@ddc-node/ddc-node": "^1.0.3"
+        "@ddc-node/ddc-node": "^1.0.3",
+        "edid": "^0.1.2"
     }
-  }
-  
+}
