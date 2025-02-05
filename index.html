@@ -3,12 +3,66 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-MGgWNU8p1oh6Kt6SeO0iPi1zCBC3dNk/MvH9OZK134o='">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self' 'sha256-MGgWNU8p1oh6Kt6SeO0iPi1zCBC3dNk/MvH9OZK134o='">
     <title>Screen Lister</title>
+    <link rel="stylesheet" href="src/tailwind.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none; 
+        width: 100%;
+        cursor: pointer;
+        outline: none;
+        border-radius: 15px;
+        height: 6px;
+        background: #ccc;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none; 
+        height: 15px;
+        width: 15px;
+        background-color: #ffcf26;
+        border-radius: 50%;
+        border: none;
+        transition: .2s ease-in-out;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        height: 15px;
+        width: 15px;
+        background-color: #ffcf26;
+        border-radius: 50%;
+        border: none;
+        transition: .2s ease-in-out;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+        box-shadow: 0 0 0 10px rgba(255, 207, 38, .2)
+      }
+      input[type="range"]:active::-webkit-slider-thumb {
+        box-shadow: 0 0 0 13px rgba(255, 207, 38, .3)
+      }
+      input[type="range"]:focus::-webkit-slider-thumb {
+        box-shadow: 0 0 0 13px rgba(255, 207, 38, .3)
+      }
+
+      input[type="range"]::-moz-range-thumb:hover {
+        box-shadow: 0 0 0 10px rgba(255, 207, 38, .2)
+      }
+      input[type="range"]:active::-moz-range-thumb {
+        box-shadow: 0 0 0 13px rgba(255, 207, 38, .3)
+      }
+      input[type="range"]:focus::-moz-range-thumb {
+        box-shadow: 0 0 0 13px rgba(255, 207, 38, .3)    
+      }
+    </style>
   </head>
-  <body>
-    <h1>Screen Lister</h1>
-    <div id="display-container"></div>
+  <body class="flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-3xl font-bold mb-20">Screen Lister</h1>
+    <div id="display-container" class="flex flex-wrap justify-center"></div>
     <script src="src/renderer.js"></script>
   </body>
 </html>
