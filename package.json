@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@ddc-node/ddc-node": "^1.0.3",
-        "edid": "^0.1.2"
+        "edid": "^0.1.2",
+        "electron-store": "^10.0.1"
     }
 }
