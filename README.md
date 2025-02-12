@@ -6,31 +6,31 @@ Bienvenue dans Screen Lister ! 🚀
 
 Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur votre machine :
 
-Node.js et npm (Facultatif : Si ce n'est pas déjà fait, installez Node.js qui inclut npm)
+Node.js et npm (Facultatif : Si ce n'est pas déjà fait, installez ** Node.js ** qui inclut ** npm **)  
 
 ## 🚀 Installation
 
 Suivez ces étapes pour configurer le projet sur votre machine locale :
 
-Clonez le dépôt Git
+** Clonez le dépôt Git **
 
 ```bash
 git clone [https://github.com/Sinndd/screen-lister.git](https://github.com/Sinndd/screen-lister.git)
 ```
 
-Accédez au dossier du projet
+** Accédez au dossier du projet **
 
 ```bash
 cd screen-lister
 ```
 
-Installez les dépendances
+** Installez les dépendances **
 
 ```bash
 npm install
 ```
 
-Lancez l'application
+** Lancez l'application **
 
 ```bash
 npm start
@@ -46,11 +46,11 @@ package.json : Liste les dépendances et scripts du projet
 
 ## 🛠 Technologies utilisées
 
-React.js
+** React.js **
 
-npm
+** npm **
 
-CSS/PostCSS/Tailwind
+** CSS/PostCSS/Tailwind **
 
 ## 📜 Licence
 
