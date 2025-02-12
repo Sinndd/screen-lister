@@ -21,9 +21,6 @@ function createWindow() {
     });
 
     mainWindow.loadFile('index.html');
-
-    // Ouvrir les DevTools
-    mainWindow.webContents.openDevTools();
 }
 
 app.on('window-all-closed', () => {

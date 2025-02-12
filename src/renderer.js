@@ -6,7 +6,6 @@ window.addEventListener('DOMContentLoaded', () => {
 async function listDisplays() {
     try {
         const displays = await window.api.getDisplays();
-        console.log('Detected displays:', displays); // Ajoutez ce log pour vérifier les écrans détectés
 
         const container = document.getElementById('display-container');
         container.className = 'flex flex-wrap justify-center';
