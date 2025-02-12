@@ -2,13 +2,13 @@
 
 Bienvenue dans Screen Lister ! 🚀
 
-📋 Prérequis
+## 📋 Prérequis
 
 Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur votre machine :
 
 Node.js et npm (Facultatif : Si ce n'est pas déjà fait, installez Node.js qui inclut npm)
 
-🚀 Installation
+## 🚀 Installation
 
 Suivez ces étapes pour configurer le projet sur votre machine locale :
 
@@ -38,13 +38,13 @@ npm start
 
 🎉 Voilà ! L'application est maintenant accessible et prête à être utilisée.
 
-📂 Structure du projet
+## 📂 Structure du projet
 
 src/ : Contient le code source de l'application
 
 package.json : Liste les dépendances et scripts du projet
 
-🛠 Technologies utilisées
+## 🛠 Technologies utilisées
 
 React.js
 
@@ -52,7 +52,7 @@ npm
 
 CSS/PostCSS/Tailwind
 
-📜 Licence
+## 📜 Licence
 
 Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
 
